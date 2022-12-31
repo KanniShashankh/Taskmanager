@@ -6,7 +6,6 @@ import NewTask from './view_models/NewTask';
 import EditTask from './view_models/EditTask';
 
 
-
 function App() {
   return (
     <Router>
