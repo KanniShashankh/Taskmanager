@@ -8,7 +8,7 @@ const listItems = numbers.map((item) =>
 
 function DoneList() {
     return (
-      <div className="mx-auto hover:space-x-8 min-w-fit max-w-sm pt-10 place-items-center items-center flex flex-col gap-x-1 ">
+      <div className="mx-auto hover:space-x-8 min-w-fit max-w-sm pt-6 place-items-center items-center flex flex-col gap-x-1 ">
           <ul> {listItems} </ul>
       </div>
     );
