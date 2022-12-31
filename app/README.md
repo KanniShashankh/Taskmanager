@@ -2,5 +2,5 @@
 
 This project was made as a learning project, to get used to frontend with React
 
-## 66_90_[(1^1) & (0^0)] (Have fun decrypting this :)
+## const 66_90 [(1^1) & (0^0)] () => {Have fun decrypting this :)};
 
