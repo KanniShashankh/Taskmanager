@@ -1,72 +1,63 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { DarkMode, DayMode } from "../components/small/icons";
 
-
-
-function NewTask() {
+export default function Modal(props : {
+  showModal : boolean,
+  setShowModal : React.Dispatch<React.SetStateAction<boolean>>,
+  refresh : () => void
+}) {
   
-    // DARK MODE SUPPORT
-    const [darkToggle, setDarkToggle] = React.useState(false)
-    const ChangeTheme = () => {
-      if(localStorage.theme === 'dark') localStorage.theme = 'light'
-      else localStorage.theme = 'dark'
-      setDarkToggle(!darkToggle)
-    }
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-    function ValidateTheme(){
-      return (localStorage.theme === 'dark') ? <DayMode></DayMode> : <DarkMode></DarkMode>
-    }
-
-    const [Task, NewTask] = React.useState(
-      {         
-        title: "",      
-        description: "",  
-        date: "", 
-        time: "",
-        done: false
-      } 
-    );
+  const [Task, NewTask] = React.useState(
+    {         
+      title: "",      
+      description: "",  
+      date: "", 
+      time: "",
+      done: false
+    } 
+  );
+  
+  const handleSubmit = () =>{
+    const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
     
-    const handleSubmit = () =>{
-      const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
-      
-      console.log(tasks);
-      if(tasks.length === 0) {
-        localStorage.setItem('tasks', JSON.stringify([Task]));
-        console.log("hi2")
-      }
-      else {
-      tasks.push(Task);
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      console.log("hi3")
+    console.log(tasks);
+    if(tasks.length === 0) {
+      localStorage.setItem('tasks', JSON.stringify([Task]));
+      console.log("hi2")
     }
-    GoHome();
-  }
-    
-
-      
-
-    //Navigation to back to home
-    const navi = useNavigate()
-    const GoHome = () => {
-      navi('/')
+    else {
+    tasks.push(Task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    console.log("hi3")
     }
+    props.setShowModal(false)
+    props.refresh();
+}
 
-    return (
-   
-        <>
-      <div className="App bg-white-400 dark:bg-black text-black dark:text-white h-screen	w-screen ">
-        <div className="bg-slate-300 mb-10 dark:bg-slate-800 flex pb-5 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
-            <h1 className="bold "> Task Manager</h1>
-        </div>
-
-        <div className="items-center mx-auto justify-center">
-          <form>
+  return(
+    <>
+      <div
+        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+      >
+        <div className="relative w-auto my-6 mx-auto max-w-3xl">
+          {/*content*/}
+          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+            {/*header*/}
+            <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+              <h3 className="text-3xl font-semibold">
+                Modal Title
+              </h3>
+              <button
+                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                onClick={() => props.setShowModal(false)}
+              >
+                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                  ×
+                </span>
+              </button>
+            </div>
+            {/*body*/}
+            <div className="relative p-6 flex-auto">
+            <form>
             <p className="bold text-center text-2xl pb-4 "> Add New Task </p>
             <div className="relative mx-auto mb-6 w-1/3 group ">
               <label htmlFor="large-input" className="font-medium absolute text-sm  left-0 text-blue-600 dark:text-blue-500 scale-75">Title</label>
@@ -105,34 +96,28 @@ function NewTask() {
               }}
               type="time" id="large-time" className="block p-4 w-1/2 text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
         </div>
-
-        <div className="flex flex-row space-x-4 justify-center items-center">
-          <button type="button" onClick={handleSubmit} className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-            Save changes
-          </button>
-          <button type="button" onClick={GoHome} className="py-2 px-4  bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-            Back to Home
-          </button>
-        </div>
           </form>
+            </div>
+            {/*footer*/}
+            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+              <button
+                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={() => props.setShowModal(false)}
+              >
+                Close
+              </button>
+              <button
+                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={handleSubmit}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
         </div>
-
-
-
-
-      
-        
-
-      <div className="absolute bottom-8 right-8">
-        <button onClick={ChangeTheme} className="items-center">
-            <ValidateTheme></ValidateTheme>
-          </button>
       </div>
-      </div>
-      </>
-      
-    
-    );
-  }
-  
-  export default NewTask;
+      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+    </>
+  );}

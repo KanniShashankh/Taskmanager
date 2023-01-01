@@ -1,5 +1,6 @@
 import React from "react"
 import { DarkMode, DayMode } from "../components/small/icons"
+import Modal from "../components/small/Modal"
 
 function EditTask() {
 
@@ -27,6 +28,7 @@ function EditTask() {
       <div className="bg-slate-300 mb-10 dark:bg-slate-800 flex pb-5 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
           <h1 className="bold "> Task Manager</h1>
       </div>
+
 
       <div className="absolute bottom-8 right-8">
         <button onClick={ChangeTheme} className="items-center">
