@@ -48,10 +48,9 @@ function Home() {
       setDarkToggle(!darkToggle)
     }
 
-
     return (
-      <div className="App bg-purple-400 dark:bg-black text-black dark:text-white h-screen	w-screen">
-        <div className="bg-pink-300 mb-10 dark:bg-slate-800 flex pb-5 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
+      <div className="h-screen w-screen App overflow-auto hover:overflow-scroll bg-slate-400 dark:bg-black text-black dark:text-white" >
+        <div className=" mb-10 dark:bg-slate-800 flex pb-5 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
             <h1 className="bold "> Task Manager</h1>
         </div>
         <button onClick={MakeTask} className=" bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Add New Task</button>
@@ -73,7 +72,8 @@ function Home() {
       <ValidateState/>
     
 
-      <div className="absolute bottom-8 right-8">
+      <div className="absolute bottom-8 right-8 flex flex-row">
+        {/* <p> Work Hard.</p> */}
         <button onClick={ChangeTheme} className="items-center">
             <ValidateTheme></ValidateTheme>
           </button>

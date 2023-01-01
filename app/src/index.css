@@ -15,3 +15,13 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+  .herobg {
+    background-image: url('./assets/img/heroBG.webp');
+  }
+  .blackbg {
+    background-image : url('./assets/img/heroBGBlack.png');
+  }
+}
