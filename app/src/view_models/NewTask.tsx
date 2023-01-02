@@ -47,9 +47,6 @@ function NewTask() {
     }
     GoHome();
   }
-    
-
-      
 
     //Navigation to back to home
     const navi = useNavigate()

@@ -3,7 +3,8 @@ import React from "react";
 export default function Modal(props : {
   showModal : boolean,
   setShowModal : React.Dispatch<React.SetStateAction<boolean>>,
-  refresh : () => void
+  refresh : () => void,
+  item : any,
 }) {
   
   const [Task, NewTask] = React.useState(
@@ -15,6 +16,10 @@ export default function Modal(props : {
       done: false
     } 
   );
+
+  NewTask(props.item);
+
+  console.log(props.item)
   
   const handleSubmit = () =>{
     const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
@@ -33,7 +38,13 @@ export default function Modal(props : {
     props.refresh();
 }
 
-  return(
+// how to refresh parent component from child component using react hooks
+// https://stackoverflow.com/questions/53253940/how-to-refresh-parent-component-from-child-component-using-react-hooks
+  
+
+
+
+return(
     <>
       <div
         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
