@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DarkMode, DayMode } from "../components/small/icons";
 
@@ -26,24 +26,22 @@ function NewTask() {
       {         
         title: "",      
         description: "",  
-        date: "", 
-        time: "",
+        start_date: "", 
+        start_time: "",
+        end_date: "", 
+        end_time: "",
         done: false
       } 
     );
     
     const handleSubmit = () =>{
       const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
-      
-      console.log(tasks);
       if(tasks.length === 0) {
         localStorage.setItem('tasks', JSON.stringify([Task]));
-        console.log("hi2")
       }
       else {
       tasks.push(Task);
       localStorage.setItem('tasks', JSON.stringify(tasks));
-      console.log("hi3")
     }
     GoHome();
   }
@@ -53,6 +51,40 @@ function NewTask() {
     const GoHome = () => {
       navi('/')
     }
+
+    const [useCurrent, setUseCurrent] = useState(false);
+
+    function localTime(date : any) {
+      var tzo = -date.getTimezoneOffset(),
+          dif = tzo >= 0 ? '+' : '-',
+          pad = function(num : number) {
+              return (num < 10 ? '0' : '') + num;
+          };
+    
+      return date.getFullYear() +
+          '-' + pad(date.getMonth() + 1) +
+          '-' + pad(date.getDate()) +
+          'T' + pad(date.getHours()) +
+          ':' + pad(date.getMinutes()) +
+          ':' + pad(date.getSeconds()) +
+          dif + pad(Math.floor(Math.abs(tzo) / 60)) +
+          ':' + pad(Math.abs(tzo) % 60);
+    }
+
+    useEffect(() => {
+      if (useCurrent) {
+        const cur = new Date();
+        const now = localTime(cur);
+        const date = now.substr(0, 10);
+        const time = now.substr(11, 5);
+        const temp = Task
+        temp.start_date = date
+        temp.start_time = time
+        NewTask(temp);
+      }
+    }, [useCurrent]);
+   
+    //add an icon next to the title
 
     return (
    
@@ -84,24 +116,78 @@ function NewTask() {
                 NewTask(Task);
               }} id="message" className="block p-3.5 pt-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>
             </div>  
-            
 
-        <div className="flex-row flex justify-center place-items-center relative mb-6 w-1/3 items-center">
-            <label htmlFor="large-date" className="font-medium  text-sm  left-0 text-blue-600 dark:text-blue-500 scale-75">Date</label>
-            <input onChange={(event) => {
+
+
+          <div>
+            <div className="flex items-center space-y-2 mx-auto mb-6 w-1/3 group form-check-inline">
+              <input 
+                id="curtime"
+                className="items-center form-checkbox"
+                type="checkbox"
+                checked={useCurrent}
+                onChange={(e) => setUseCurrent(e.target.checked)}
+              />
+              <label className="align-baseline float-right ml-4">Use current date and time for start</label>
+            </div>
+          </div>
+            
+           <div className="relative space-y-2 mx-auto mb-6 w-1/3 group form-check-inline">
+            <div className="flex items-center">
+            {!useCurrent && (<label htmlFor="start" className="font-small items-center absolute text-sm top-0 
+             left-0 text-blue-600 dark:text-blue-500 scale-75">Start Date and Time</label>)}
+              
+              <input 
+              id="start" 
+              className={(useCurrent) ? "items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
+              type="date"
+              onChange={(event) => {
                 const temp = Task
-                temp.date = event.target.value   
-                NewTask(Task);
-              }} type="date" id="large-date" className="block p-4 w-1/2 text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-        
-            <label htmlFor="large-time" className="font-medium  text-sm  left-0 text-blue-600 dark:text-blue-500 scale-75">Time</label>
-            <input onChange={(event) => {
-                const temp = Task
-                temp.time = event.target.value   
+                temp.start_date = event.target.value   
                 NewTask(Task);
               }}
-              type="time" id="large-time" className="block p-4 w-1/2 text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-        </div>
+              disabled={useCurrent} />
+              <input 
+              disabled={useCurrent}
+              onChange={(event) => {
+                const temp = Task
+                temp.start_time = event.target.value   
+                NewTask(Task);
+              }}
+              className={(useCurrent) ? "items-center w-1/2 px-4 py-4 rounded-r-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "items-center w-1/2 px-4 py-4 rounded-r-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
+               type="time" />
+            </div>
+          </div>
+
+
+
+
+
+
+          <div className="relative space-y-2 mx-auto mb-6 w-1/3 group form-check-inline">
+            <div className="flex items-center">
+            <label htmlFor="start" className="font-small items-center absolute text-sm top-0 
+             left-0 text-blue-600 dark:text-blue-500 scale-75">End Date and Time</label>
+
+              <input id="start" 
+              onChange={(event) => {
+                const temp = Task
+                temp.end_date = event.target.value   
+                NewTask(Task);
+              }}
+              className="w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" type="date" />
+              <input 
+              onChange={(event) => {
+                const temp = Task
+                temp.end_time = event.target.value   
+                NewTask(Task);
+              }}
+              className="w-1/2 px-4 py-4 rounded-r-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 border bg-gray-50 border-gray-400" type="time" />
+            </div>
+          </div>
+          
+          {/* <DateTimePicker></DateTimePicker> */}
+
 
         <div className="flex flex-row space-x-4 justify-center items-center">
           <button type="button" onClick={handleSubmit} className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">

@@ -10,8 +10,8 @@ function Home() {
   const [check, setCheck] = useState(true);
   const [darkToggle, setDarkToggle] = React.useState(false)
 
-
-  function ValidateState(){
+  function ValidateState()
+  {
     return (!check) ? <DoneList></DoneList> : <PendingList></PendingList>
   }
 
@@ -22,10 +22,12 @@ function Home() {
   }
 
   function ColorNav(props : {name : string}){
-    if(props.name === "Pending"){
+    if(props.name === "Pending")
+    {
       return (check) ? <RedColor></RedColor> : <DefColor name = {props.name} ></DefColor>
     }
-    else{
+    else
+    {
       return (!check) ? <GreenColor></GreenColor> : <DefColor name = {props.name} ></DefColor>
     }
   }
@@ -35,7 +37,6 @@ function Home() {
 
   //Navigation to back to home
     const navi = useNavigate()
-
     const MakeTask = () => {
       navi('/NewTask')
     }
@@ -50,8 +51,8 @@ function Home() {
 
 
     return (
-      <div className="h-screen w-screen App overflow-auto hover:overflow-scroll bg-slate-200 dark:bg-black text-black dark:text-white" >
-        <div className=" mb-10 dark:bg-slate-800 flex pb-5 bg-slate-400 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
+      <div className="h-screen w-screen App overflow-auto hover:overflow-scroll bg-amber-100 dark:bg-black text-black dark:text-white" >
+        <div className=" mb-10 dark:bg-slate-800 flex pb-5 bg-red-300 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
             <h1 className="bold "> Task Manager</h1>
         </div>
         <button onClick={MakeTask} className=" bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Add New Task</button>
