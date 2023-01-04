@@ -40,3 +40,5 @@ function EditTask() {
   }
   
   export default EditTask;
+
+  //make a modal for the edit task page

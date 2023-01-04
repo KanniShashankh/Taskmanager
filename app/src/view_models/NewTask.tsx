@@ -8,6 +8,7 @@ function NewTask() {
   
     // DARK MODE SUPPORT
     const [darkToggle, setDarkToggle] = React.useState(false)
+    
     const ChangeTheme = () => {
       if(localStorage.theme === 'dark') localStorage.theme = 'light'
       else localStorage.theme = 'dark'
@@ -33,9 +34,109 @@ function NewTask() {
         done: false
       } 
     );
+
+    //make all fields of the form required and do not let them submit if they are empty
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [start_date, setStart_date] = useState(""); 
+    const [start_time, setStart_time] = useState("");
+    const [end_date, setEnd_date] = useState("");
+    const [end_time, setEnd_time] = useState("");
+    
+    const [titleError, setTitleError] = useState("");
+    const [descriptionError, setDescriptionError] = useState("");
+    const [start_dateError, setStart_dateError] = useState("");
+    const [start_timeError, setStart_timeError] = useState("");
+    const [end_dateError, setEnd_dateError] = useState("");
+    const [end_timeError, setEnd_timeError] = useState("");
+    
+    const handleTitle = (e: any) => {
+      setTitle(e.target.value);
+      if (e.target.value.length < 1) {
+        setTitleError("Title is required!");
+      } else if (e.target.value.length > 20) {
+        setTitleError("Title needs to be 20 characters or less!");
+      } else {
+        setTitleError("");
+      }
+    };
+    
+    const handleDescription = (e: any) => {
+      setDescription(e.target.value);
+      if (e.target.value.length < 1) {
+        setDescriptionError("Description is required!");
+      } else if (e.target.value.length > 100) {
+        setDescriptionError("Description needs to be 100 characters or less!");
+      } else {
+        setDescriptionError("");
+      }
+    };
+
+    const handleStart_date = (e: any) => {
+      setStart_date(e.target.value);
+      if (e.target.value.length < 1) {
+        setStart_dateError("Start date is required!");
+      } else {
+        setStart_dateError("");
+      }
+    };
+
+    const handleStart_time = (e: any) => {
+      setStart_time(e.target.value);
+      if (e.target.value.length < 1) {
+        setStart_timeError("Start time is required!");
+      } else {
+        setStart_timeError("");
+      }
+    };
+
+    const handleEnd_date = (e: any) => {
+      setEnd_date(e.target.value);
+      if (e.target.value.length < 1) {
+        setEnd_dateError("End date is required!");
+      } else {
+        setEnd_dateError("");
+      }
+    };
+
+    const handleEnd_time = (e: any) => {
+      setEnd_time(e.target.value);
+      if (e.target.value.length < 1) {
+        setEnd_timeError("End time is required!");
+      } else {
+        setEnd_timeError("");
+      }
+    };
+
+    // const handleSubmit = (e: any) => {
+    //   e.preventDefault();
+    //   if (titleError || descriptionError || start_dateError || start_timeError || end_dateError || end_timeError) {
+    //     alert("Please fill out the form correctly before submitting!");
+    //   } else {
+    //     NewTask({
+    //       title: title,
+    //       description: description,
+    //       start_date: start_date,
+    //       start_time: start_time,
+    //       end_date: end_date,
+    //       end_time: end_time,
+    //       done: false
+    //     });
+    //     localStorage.setItem('tasks', JSON.stringify([Task]));
+    //     GoHome();
+    //   }
+    // };
+    
+      
     
     const handleSubmit = () =>{
-      const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
+      const tasks : { title: string,      
+      description: string,  
+      start_date: string, 
+      start_time: string,
+      end_date: string, 
+      end_time: string,
+      done: boolean}[] = JSON.parse( localStorage.getItem("tasks") || '[]' );
       if(tasks.length === 0) {
         localStorage.setItem('tasks', JSON.stringify([Task]));
       }
@@ -75,8 +176,8 @@ function NewTask() {
       if (useCurrent) {
         const cur = new Date();
         const now = localTime(cur);
-        const date = now.substr(0, 10);
-        const time = now.substr(11, 5);
+        const date = now.substring(0, 10);
+        const time = now.substring(11, 5);
         const temp = Task
         temp.start_date = date
         temp.start_time = time
@@ -84,19 +185,17 @@ function NewTask() {
       }
     }, [useCurrent]);
    
-    //add an icon next to the title
+
 
     return (
-   
         <>
-      <div className="App bg-white-400 dark:bg-black text-black dark:text-white h-screen	w-screen ">
-        <div className="bg-slate-300 mb-10 dark:bg-slate-800 flex pb-5 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
+      <div className="h-screen w-screen App overflow-auto hover:overflow-scroll bg-amber-100 dark:bg-black text-black dark:text-white" >
+      <div className=" mb-10 dark:bg-slate-800 flex pb-5 bg-red-300 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
             <h1 className="bold "> Task Manager</h1>
         </div>
-
-        <div className="items-center mx-auto justify-center">
+        <div className="items-center mx-auto justify-center ">
           <form>
-            <p className="bold text-center text-2xl pb-4 "> Add New Task </p>
+            <p className="bold text-center text-2xl relative mx-auto mb-6 w-1/3 group form-check-inline"> Task Details </p>
             <div className="relative mx-auto mb-6 w-1/3 group ">
               <label htmlFor="large-input" className="font-medium absolute text-sm  left-0 text-blue-600 dark:text-blue-500 scale-75">Title</label>
               <input 
@@ -120,7 +219,7 @@ function NewTask() {
 
 
           <div>
-            <div className="flex items-center space-y-2 mx-auto mb-6 w-1/3 group form-check-inline">
+            <div className="flex items-center mx-auto mb-6 w-1/3 group form-check-inline">
               <input 
                 id="curtime"
                 className="items-center form-checkbox"
@@ -139,7 +238,7 @@ function NewTask() {
               
               <input 
               id="start" 
-              className={(useCurrent) ? "items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
+              className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
               type="date"
               onChange={(event) => {
                 const temp = Task
@@ -154,7 +253,7 @@ function NewTask() {
                 temp.start_time = event.target.value   
                 NewTask(Task);
               }}
-              className={(useCurrent) ? "items-center w-1/2 px-4 py-4 rounded-r-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "items-center w-1/2 px-4 py-4 rounded-r-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
+              className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-r-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-r-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
                type="time" />
             </div>
           </div>

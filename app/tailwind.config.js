@@ -8,4 +8,9 @@ module.exports = {
   },
   plugins: [],
   darkMode: 'class',
+  theme: {
+    minWidth: {
+      '1/2': '50%',
+    }
+  }
 }
