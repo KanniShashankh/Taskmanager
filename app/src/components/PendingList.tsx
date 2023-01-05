@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Modal from './small/Modal';
-import EditTask from '../view_models/EditTask';
 
 function PendingList() {
   
@@ -31,11 +30,6 @@ function PendingList() {
   }
 
   const [showModal, setShowModal] = useState(false);
-
-  const handleShowModal = () => {
-    setShowModal(!showModal);
-  }
-
 
 
   return (

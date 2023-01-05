@@ -34,7 +34,7 @@ export default function Modal(props : {
     if(props.item >= 0){
       NewTask(tasks[props.item]);
     }
-  },[])
+  },[props.item])
   
       window.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {

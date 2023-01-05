@@ -1,6 +1,5 @@
 import React from "react"
 import { DarkMode, DayMode } from "../components/small/icons"
-import Modal from "../components/small/Modal"
 
 function EditTask() {
 

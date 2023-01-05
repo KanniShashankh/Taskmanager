@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DarkMode, DayMode } from "../components/small/icons";
 
@@ -127,7 +127,6 @@ function NewTask() {
     //   }
     // };
     
-    const ref = useRef();
 
     
     const handleSubmit = () =>{
@@ -184,10 +183,16 @@ function NewTask() {
         temp.start_time = time
         NewTask(temp);
       }
-    }, [useCurrent]);
+      Refresh();
+    }, [useCurrent,Task]);
+
    
     
-
+    const [refresh, setRefresh] = useState(false)
+  const Refresh = () => {
+    setRefresh(!refresh)
+  }
+  
 
     return (
         <>
@@ -230,7 +235,11 @@ function NewTask() {
                 className="items-center form-checkbox"
                 type="checkbox"
                 checked={useCurrent}
-                onChange={(e) => setUseCurrent(e.target.checked)}
+                onChange={(e) => {
+                  setUseCurrent(e.target.checked)
+                  Refresh();
+                  
+                }}
               />
               <label className="align-baseline float-right ml-4">Use current date and time for start</label>
             </div>
@@ -245,22 +254,14 @@ function NewTask() {
                 id="start" 
                 className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
                 type="date" 
+                value={Task.start_date}
+                onChange={(e) => NewTask({ ...Task, start_date: e.target.value })}
 
-                value={(useCurrent) ? Task.start_date : "DD/MM/YYYY"}
-                onChange={(event) => {
-                  const temp = Task
-                  temp.start_date = event.target.value 
-                  NewTask(Task);
-                }}
                 disabled={useCurrent} />
               <input 
               disabled={useCurrent}
-              onChange={(event) => {
-                const temp = Task
-                temp.start_time = event.target.value   
-                NewTask(Task);
-              }}
-              value={(useCurrent) ? Task.start_time : "DD/MM/YYYY"}
+              value={Task.start_time}
+              onChange={(e) => NewTask({ ...Task, start_time: e.target.value })}
 
               className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-r-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-r-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
                type="time" />

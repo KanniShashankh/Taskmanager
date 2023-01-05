@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Modal from './small/Modal';
-import EditTask from '../view_models/EditTask';
 
 function DoneList() {
   
