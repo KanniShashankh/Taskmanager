@@ -52,7 +52,7 @@ function Home() {
         <div className=" mb-10 dark:bg-slate-800 flex bg-red-300 p-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
             <h1 className="text-5xl tracking-wide bold "> Task Manager</h1>
         </div>
-        <button onClick={MakeTask} className=" bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Add New Task</button>
+        <button onClick={MakeTask} className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-125 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Add New Task</button>
   
       <br></br>
 

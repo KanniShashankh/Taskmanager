@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DarkMode, DayMode } from "../components/small/icons";
 
@@ -127,7 +127,8 @@ function NewTask() {
     //   }
     // };
     
-      
+    const ref = useRef();
+
     
     const handleSubmit = () =>{
       const tasks : { title: string,      
@@ -178,8 +179,6 @@ function NewTask() {
         const now = localTime(cur);
         const date = now.substr(0, 10);
         const time = now.substr(11, 5);
-        console.log(now)
-        console.log(time)
         const temp = Task
         temp.start_date = date
         temp.start_time = time
@@ -187,6 +186,7 @@ function NewTask() {
       }
     }, [useCurrent]);
    
+    
 
 
     return (
@@ -241,18 +241,18 @@ function NewTask() {
             {!useCurrent && (<label htmlFor="start" className="font-small items-center absolute text-sm top-0 
              left-0 text-blue-600 dark:text-blue-500 scale-75">Start Date and Time</label>)}
               
-              <input 
-              id="start" 
-              value = {(useCurrent) ? Task.start_date : "fake"}
-              className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
-              type="date"
+                <input 
+                id="start" 
+                className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
+                type="date" 
 
-              onChange={(event) => {
-                const temp = Task
-                temp.start_date = event.target.value   
-                NewTask(Task);
-              }}
-              disabled={useCurrent} />
+                value={(useCurrent) ? Task.start_date : "DD/MM/YYYY"}
+                onChange={(event) => {
+                  const temp = Task
+                  temp.start_date = event.target.value 
+                  NewTask(Task);
+                }}
+                disabled={useCurrent} />
               <input 
               disabled={useCurrent}
               onChange={(event) => {
@@ -260,6 +260,8 @@ function NewTask() {
                 temp.start_time = event.target.value   
                 NewTask(Task);
               }}
+              value={(useCurrent) ? Task.start_time : "DD/MM/YYYY"}
+
               className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-r-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-r-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
                type="time" />
             </div>

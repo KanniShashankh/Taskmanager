@@ -18,14 +18,15 @@ export default function Modal(props : {
       done: false
     } 
   );
-  
+  const [edit,setEdit] = React.useState(false);
 
   
   const handleSubmit = () =>{
     const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
-    console.log(tasks);
-    console.log(props.item);
-    props.setShowModal(false);
+    tasks[props.item] = Task;
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    setEdit(false);
+    // props.setShowModal(false);
 }
 
   useEffect(()=>{
@@ -48,7 +49,7 @@ return(
       <div
         className="backdrop-opacity-50	 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 "
       >
-        <div className="relative my-6 mx-auto min-w-[33%] max-w-[85%] flex-nowrap rounded">
+        <div className="relative my-6 mx-auto min-w-[50%] max-w-[85%] flex-nowrap rounded">
           <div   className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white dark:bg-slate-700 dark:outline dark:outline-white ">
 
             <div className="flex justify-center p-7 border-b border-solid border-slate-200 rounded flex-nowrap">
@@ -63,7 +64,6 @@ return(
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
 </svg>
-       
               </button>
             </div>
             
@@ -75,48 +75,90 @@ return(
                 Description
               </h3>
             </div>
-            <div className="grow float-right  justify-start mx-5 my-3 border-slate-200 rounded  flex-nowrap">
+            <div className="grow float-right   justify-start mx-5 my-3 border-slate-200 rounded  flex-nowrap">
               {/* <p className=" justify-start text-black text-center dark:text-white font-semibold">
                 {Task.description}
               </p> */}
-              <input className=" justify-start mx-5 my-3 py-3 text-black text-center dark:text-white font-semibold" />
+              <div className="relative mx-auto w-full  group ">
+              <textarea
+              disabled={!edit}
+              value={Task.description}
+              placeholder="Enter Description"
+              onChange={(e) => NewTask({ ...Task, description: e.target.value })} id="message_box" className="block p-2 w-full justify-center self-center text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+            </div>  
+
             </div>
             </div>
 
 
-            {(Task.start_date !== "" && Task.start_time !== "null") &&<div className="flex relative p-2 flex-auto flex-nowrap">
+            <div className="flex relative p-2 flex-auto flex-nowrap">
               <div className="shrink-0 self-center w-[33%] float-left outline outline-neutral-600 dark:outline-slate-400 justify-start mx-5 my-3 px-4 py-3 border-solid border-slate-200 rounded">
               <h3 className="self-center text-xl  justify-start text-center text-black dark:text-white font-bold">
               Begin Date
               </h3>
             </div>
-            <div className="grow float-right  justify-start mx-5 my-3 py-3 border-slate-200 rounded  flex-nowrap">
-            <p className="inline justify-start mr-6 text-black text-center dark:text-white font-semibold">
-                {Task.start_date}
-              </p>
-              <p className="inline justify-start text-black text-center dark:text-white font-semibold">
-                {Task.start_time} 
-              </p>
+            
+            
+
+            <div className="grow flex relative mx-5 my-3 w-full justify-center self-center group form-check-inline">
+            <div className="grow flex items-center">
+                <input 
+                className= " items-center w-1/2 px-4 py-4 rounded-l-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"
+                type="date" 
+
+                value={Task.start_date}
+                onChange={(e) => NewTask({ ...Task, start_date: e.target.value })}
+                disabled={!edit} />
+              <input 
+              disabled={!edit}
+              onChange={(e) => NewTask({ ...Task, start_time: e.target.value })}
+              value={Task.start_time}
+
+              className= " items-center w-1/2 px-4 py-4 rounded-r-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"
+               type="time" />
             </div>
-            </div>}
+          </div>   
 
 
 
-            {(Task.end_date !== "" ) && (Task.end_time !== "") && <div className="flex relative p-2 flex-auto flex-nowrap">
+           
+            </div>
+
+            
+
+
+          
+
+
+          <div className="flex relative mb-3 p-2 flex-auto flex-nowrap">
               <div className="shrink-0 self-center w-[33%] float-left outline outline-neutral-600 dark:outline-slate-400 justify-start mx-5 my-3 px-4 py-3 border-solid border-slate-200 rounded">
               <h3 className="self-center text-xl justify-start text-center text-black dark:text-white font-bold">
                 Due Date  
               </h3>
             </div>
-            <div className="grow float-right  justify-start mx-5 my-3 py-5 border-slate-200 rounded  flex-nowrap">
-            <p className="inline justify-start mr-6 text-black text-center dark:text-white font-semibold">
-                {Task.end_date}
-              </p>
-              <p className="inline justify-start text-black text-center dark:text-white font-semibold">
-                {Task.end_time} 
-              </p>
+            
+
+<div className="grow flex relative mx-5 my-3w-full justify-center self-center group form-check-inline">
+            <div className="grow flex items-center">
+                <input 
+                className= " items-center w-1/2 px-4 py-4 rounded-l-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"
+                type="date" 
+
+                value={Task.end_date}
+                onChange={(e) => NewTask({ ...Task, end_date: e.target.value })}
+                disabled={!edit} />
+              <input 
+              disabled={!edit}
+              onChange={(e) => NewTask({ ...Task, end_time: e.target.value })}
+              value={Task.end_time}
+
+              className= " items-center w-1/2 px-4 py-4 rounded-r-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"
+               type="time" />
             </div>
-            </div>}
+          </div>   
+
+
+            </div>
 
            
 
@@ -131,13 +173,21 @@ return(
               >
                 Close
               </button>
-              <button
+              {edit?<button
                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={handleSubmit}
               >
                 Save Changes
-              </button>
+              </button>:
+              <button
+              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 ease-linear transition-all duration-150"
+              type="button"
+              onClick={()=>setEdit(!edit)}
+            >
+              Edit Task
+            </button>
+            }
             </div>
           </div>
         </div>
