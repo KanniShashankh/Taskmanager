@@ -36,77 +36,77 @@ function NewTask() {
     );
 
     //make all fields of the form required and do not let them submit if they are empty
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [start_date, setStart_date] = useState(""); 
-    const [start_time, setStart_time] = useState("");
-    const [end_date, setEnd_date] = useState("");
-    const [end_time, setEnd_time] = useState("");
+    // const [title, setTitle] = useState("");
+    // const [description, setDescription] = useState("");
+    // const [start_date, setStart_date] = useState(""); 
+    // const [start_time, setStart_time] = useState("");
+    // const [end_date, setEnd_date] = useState("");
+    // const [end_time, setEnd_time] = useState("");
     
-    const [titleError, setTitleError] = useState("");
-    const [descriptionError, setDescriptionError] = useState("");
-    const [start_dateError, setStart_dateError] = useState("");
-    const [start_timeError, setStart_timeError] = useState("");
-    const [end_dateError, setEnd_dateError] = useState("");
-    const [end_timeError, setEnd_timeError] = useState("");
+    // const [titleError, setTitleError] = useState("");
+    // const [descriptionError, setDescriptionError] = useState("");
+    // const [start_dateError, setStart_dateError] = useState("");
+    // const [start_timeError, setStart_timeError] = useState("");
+    // const [end_dateError, setEnd_dateError] = useState("");
+    // const [end_timeError, setEnd_timeError] = useState("");
     
-    const handleTitle = (e: any) => {
-      setTitle(e.target.value);
-      if (e.target.value.length < 1) {
-        setTitleError("Title is required!");
-      } else if (e.target.value.length > 20) {
-        setTitleError("Title needs to be 20 characters or less!");
-      } else {
-        setTitleError("");
-      }
-    };
+    // const handleTitle = (e: any) => {
+    //   setTitle(e.target.value);
+    //   if (e.target.value.length < 1) {
+    //     setTitleError("Title is required!");
+    //   } else if (e.target.value.length > 20) {
+    //     setTitleError("Title needs to be 20 characters or less!");
+    //   } else {
+    //     setTitleError("");
+    //   }
+    // };
     
-    const handleDescription = (e: any) => {
-      setDescription(e.target.value);
-      if (e.target.value.length < 1) {
-        setDescriptionError("Description is required!");
-      } else if (e.target.value.length > 100) {
-        setDescriptionError("Description needs to be 100 characters or less!");
-      } else {
-        setDescriptionError("");
-      }
-    };
+    // const handleDescription = (e: any) => {
+    //   setDescription(e.target.value);
+    //   if (e.target.value.length < 1) {
+    //     setDescriptionError("Description is required!");
+    //   } else if (e.target.value.length > 100) {
+    //     setDescriptionError("Description needs to be 100 characters or less!");
+    //   } else {
+    //     setDescriptionError("");
+    //   }
+    // };
 
-    const handleStart_date = (e: any) => {
-      setStart_date(e.target.value);
-      if (e.target.value.length < 1) {
-        setStart_dateError("Start date is required!");
-      } else {
-        setStart_dateError("");
-      }
-    };
+    // const handleStart_date = (e: any) => {
+    //   setStart_date(e.target.value);
+    //   if (e.target.value.length < 1) {
+    //     setStart_dateError("Start date is required!");
+    //   } else {
+    //     setStart_dateError("");
+    //   }
+    // };
 
-    const handleStart_time = (e: any) => {
-      setStart_time(e.target.value);
-      if (e.target.value.length < 1) {
-        setStart_timeError("Start time is required!");
-      } else {
-        setStart_timeError("");
-      }
-    };
+    // const handleStart_time = (e: any) => {
+    //   setStart_time(e.target.value);
+    //   if (e.target.value.length < 1) {
+    //     setStart_timeError("Start time is required!");
+    //   } else {
+    //     setStart_timeError("");
+    //   }
+    // };
 
-    const handleEnd_date = (e: any) => {
-      setEnd_date(e.target.value);
-      if (e.target.value.length < 1) {
-        setEnd_dateError("End date is required!");
-      } else {
-        setEnd_dateError("");
-      }
-    };
+    // const handleEnd_date = (e: any) => {
+    //   setEnd_date(e.target.value);
+    //   if (e.target.value.length < 1) {
+    //     setEnd_dateError("End date is required!");
+    //   } else {
+    //     setEnd_dateError("");
+    //   }
+    // };
 
-    const handleEnd_time = (e: any) => {
-      setEnd_time(e.target.value);
-      if (e.target.value.length < 1) {
-        setEnd_timeError("End time is required!");
-      } else {
-        setEnd_timeError("");
-      }
-    };
+    // const handleEnd_time = (e: any) => {
+    //   setEnd_time(e.target.value);
+    //   if (e.target.value.length < 1) {
+    //     setEnd_timeError("End time is required!");
+    //   } else {
+    //     setEnd_timeError("");
+    //   }
+    // };
 
     // const handleSubmit = (e: any) => {
     //   e.preventDefault();
@@ -176,8 +176,10 @@ function NewTask() {
       if (useCurrent) {
         const cur = new Date();
         const now = localTime(cur);
-        const date = now.substring(0, 10);
-        const time = now.substring(11, 5);
+        const date = now.substr(0, 10);
+        const time = now.substr(11, 5);
+        console.log(now)
+        console.log(time)
         const temp = Task
         temp.start_date = date
         temp.start_time = time
@@ -189,9 +191,9 @@ function NewTask() {
 
     return (
         <>
-      <div className="h-screen w-screen App overflow-auto hover:overflow-scroll bg-amber-100 dark:bg-black text-black dark:text-white" >
-      <div className=" mb-10 dark:bg-slate-800 flex pb-5 bg-red-300 pt-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
-            <h1 className="bold "> Task Manager</h1>
+      <div className="h-screen w-screen App overflow-auto bg-amber-100 dark:bg-black text-black dark:text-white" >
+      <div className=" mb-10 dark:bg-slate-800 flex bg-red-300 p-10 justify-center space-x-4 auto-rows-auto font-bold text-3xl text-black dark:text-white">
+      <h1 className="text-5xl tracking-wide bold "> Task Manager</h1>
         </div>
         <div className="items-center mx-auto justify-center ">
           <form>
@@ -199,6 +201,7 @@ function NewTask() {
             <div className="relative mx-auto mb-6 w-1/3 group ">
               <label htmlFor="large-input" className="font-medium absolute text-sm  left-0 text-blue-600 dark:text-blue-500 scale-75">Title</label>
               <input 
+              placeholder="Enter Title"
               onChange={(event) => {
                 const temp = Task
                 temp.title = event.target.value   
@@ -208,12 +211,14 @@ function NewTask() {
             </div>
 
             <div className="relative mx-auto mb-6 w-1/3 group ">
-              <label htmlFor="message" className="font-small items-center absolute text-sm  left-0 text-blue-600 dark:text-blue-500 scale-75">Description</label>
-              <textarea onChange={(event) => {
+              <label htmlFor="message_box" className="font-small items-center absolute text-sm  left-0 text-blue-600 dark:text-blue-500 scale-75">Description</label>
+              <textarea
+              placeholder="Enter Description"
+              onChange={(event) => {
                 const temp = Task
                 temp.description = event.target.value   
                 NewTask(Task);
-              }} id="message" className="block p-3.5 pt-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>
+              }} id="message_box" className="block p-3.5 pt-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
             </div>  
 
 
@@ -238,8 +243,10 @@ function NewTask() {
               
               <input 
               id="start" 
+              value = {(useCurrent) ? Task.start_date : "fake"}
               className={(useCurrent) ? "grow mx-auto items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400" : "grow items-center w-1/2 px-4 py-4 rounded-l-lg sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 border border-gray-400"}
               type="date"
+
               onChange={(event) => {
                 const temp = Task
                 temp.start_date = event.target.value   

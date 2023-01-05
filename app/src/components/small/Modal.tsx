@@ -1,5 +1,4 @@
-import React from "react";
-import { DarkMode, DayMode } from "./icons";
+import React, { useEffect } from "react";
 
 export default function Modal(props : {
   showModal : boolean,
@@ -7,11 +6,6 @@ export default function Modal(props : {
   refresh : () => void,
   item : any,
 }) {
-
-  
-
-
-
   
   const [Task, NewTask] = React.useState(
     {         
@@ -24,68 +18,113 @@ export default function Modal(props : {
       done: false
     } 
   );
-
+  
 
   
   const handleSubmit = () =>{
     const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
     console.log(tasks);
     console.log(props.item);
-    // if(tasks.length === 0) {
-    //   localStorage.setItem('tasks', JSON.stringify([Task]));
-    //   console.log("hi2")
-    // }
-    // else {
-    // tasks.push(Task);
-    // localStorage.setItem('tasks', JSON.stringify(tasks));
-    // console.log("hi3")
-    // }
     props.setShowModal(false);
 }
 
+  useEffect(()=>{
+    const tasks : any[] = JSON.parse( localStorage.getItem("tasks") || '[]' ) ;
+    if(props.item >= 0){
+      NewTask(tasks[props.item]);
+    }
+  },[])
   
+      window.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          props.setShowModal(false);
+        }
+      });
 
 
 
 return(
     <>
       <div
-        className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+        className="backdrop-opacity-50	 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 "
       >
-        <div className="relative w-auto my-6 mx-auto max-w-3xl">
-          {/*conte×t*/}
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-            {/*header*/}
-            <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-              <h3 className="text-3xl font-semibold">
-                Edit Task
+        <div className="relative my-6 mx-auto min-w-[33%] max-w-[85%] flex-nowrap rounded">
+          <div   className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white dark:bg-slate-700 dark:outline dark:outline-white ">
+
+            <div className="flex justify-center p-7 border-b border-solid border-slate-200 rounded flex-nowrap">
+              <h3 className="text-3xl justify-center text-center text-black dark:text-white font-semibold">
+                {Task.title}
               </h3>
-              <button
-                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+              <button onClick={() => props.setShowModal(false)}
+                className="p-1 ml-auto border-0 text-black float-right text-3xl font-semibold"
               >
-                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                  
-                </span>
+                
+                
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+</svg>
+       
               </button>
             </div>
-            {/*body*/}
-            <div className="relative p-6 flex-auto">
+            
+
+
+            <div className="flex relative p-2 flex-auto flex-nowrap">
+              <div className=" self-center shrink-0 w-[33%] float-left outline outline-neutral-600 dark:outline-slate-400 justify-start mx-5 my-3 px-4 py-3 border-solid border-slate-200 rounded">
+              <h3 className="self-center text-xl justify-start text-center text-black dark:text-white font-bold">
+                Description
+              </h3>
+            </div>
+            <div className="grow float-right  justify-start mx-5 my-3 border-slate-200 rounded  flex-nowrap">
+              {/* <p className=" justify-start text-black text-center dark:text-white font-semibold">
+                {Task.description}
+              </p> */}
+              <input className=" justify-start mx-5 my-3 py-3 text-black text-center dark:text-white font-semibold" />
+            </div>
+            </div>
+
+
+            {(Task.start_date !== "" && Task.start_time !== "null") &&<div className="flex relative p-2 flex-auto flex-nowrap">
+              <div className="shrink-0 self-center w-[33%] float-left outline outline-neutral-600 dark:outline-slate-400 justify-start mx-5 my-3 px-4 py-3 border-solid border-slate-200 rounded">
+              <h3 className="self-center text-xl  justify-start text-center text-black dark:text-white font-bold">
+              Begin Date
+              </h3>
+            </div>
+            <div className="grow float-right  justify-start mx-5 my-3 py-3 border-slate-200 rounded  flex-nowrap">
+            <p className="inline justify-start mr-6 text-black text-center dark:text-white font-semibold">
+                {Task.start_date}
+              </p>
+              <p className="inline justify-start text-black text-center dark:text-white font-semibold">
+                {Task.start_time} 
+              </p>
+            </div>
+            </div>}
+
+
+
+            {(Task.end_date !== "" ) && (Task.end_time !== "") && <div className="flex relative p-2 flex-auto flex-nowrap">
+              <div className="shrink-0 self-center w-[33%] float-left outline outline-neutral-600 dark:outline-slate-400 justify-start mx-5 my-3 px-4 py-3 border-solid border-slate-200 rounded">
+              <h3 className="self-center text-xl justify-start text-center text-black dark:text-white font-bold">
+                Due Date  
+              </h3>
+            </div>
+            <div className="grow float-right  justify-start mx-5 my-3 py-5 border-slate-200 rounded  flex-nowrap">
+            <p className="inline justify-start mr-6 text-black text-center dark:text-white font-semibold">
+                {Task.end_date}
+              </p>
+              <p className="inline justify-start text-black text-center dark:text-white font-semibold">
+                {Task.end_time} 
+              </p>
+            </div>
+            </div>}
+
            
 
 
-
-
-
-
-
-
-
-
-            </div>
-            {/*footer*/}
-            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+  
+            <div className="flex items-center justify-end px-6 py-3 border-t border-solid border-slate-200 rounded-b">
               <button
-                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm  mr-1 mb-1 ease-linear transition-all duration-150"
                 onClick={() => props.setShowModal(false)}
                 type="button"
                 
@@ -93,7 +132,7 @@ return(
                 Close
               </button>
               <button
-                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={handleSubmit}
               >
@@ -102,8 +141,9 @@ return(
             </div>
           </div>
         </div>
-      </div>
+      </div> 
      
-      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      <div className="opacity-75 fixed inset-0 z-40 bg-black"></div>
+      
     </>
   );}
